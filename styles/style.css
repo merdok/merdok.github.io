@@ -26,7 +26,7 @@ html {
 
 body {
 	background-attachment: fixed;
-    background-color: #3256a6;
+    background-color: #000;
     background-image: -webkit-linear-gradient(left top, #3256a6, #7fa1eb);
     background-image: -moz-linear-gradient(left top, #3256a6, #7fa1eb);
     background-image: -o-linear-gradient(left top, #3256a6, #7fa1eb);
