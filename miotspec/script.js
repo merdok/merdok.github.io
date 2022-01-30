@@ -1,7 +1,7 @@
 $('#getDeviceMetadata').on('click', async function(e) {
   e.preventDefault();
 
-  $('.metadata-section').hide();
+  $('.metadata-table-section').hide();
   $('.error-section').hide();
   $('.warning-section').hide();
   $('.metadata-table-properties table tbody').empty();
@@ -36,7 +36,7 @@ function showMetadataTable(metadata) {
   $('.metadata-table-events table tbody').empty();
 
   if (metadata) {
-    $('.metadata-section').show();
+    $('.metadata-table-section').show();
     $('.error-section').hide();
     $('.warning-section').hide();
 
@@ -66,7 +66,7 @@ function showMetadataTable(metadata) {
 
 function showError(errorMsg) {
   $('.spinner-section').hide();
-  $('.metadata-section').hide();
+  $('.metadata-table-section').hide();
   $('.warning-section').hide();
   $('.error-section').show();
   $('.error-section p').text(errorMsg);
@@ -74,7 +74,7 @@ function showError(errorMsg) {
 
 function showWarning(warningMsg) {
   $('.spinner-section').hide();
-  $('.metadata-section').hide();
+  $('.metadata-table-section').hide();
   $('.error-section').hide();
   $('.warning-section').show();
   $('.warning-section p').text(warningMsg);
