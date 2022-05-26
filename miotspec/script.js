@@ -9,17 +9,17 @@ if (model) {
   }, 150);
 }
 
+function updateUrlParamModel(newModel) {
+  urlParams.set('model', newModel);
+  window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+}
+
 $('#getDeviceMetadata').on('click', async (e) => {
   e.preventDefault();
   let modelInput = $('#deviceModelInputMetadata');
   let deviceModel = modelInput.val();
   searchForSpecByModel(deviceModel);
 });
-
-function updateUrlParamModel(newModel) {
-  urlParams.set('model', newModel);
-  window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
-}
 
 async function searchForSpecByModel(deviceModel) {
   if (deviceModel) {
