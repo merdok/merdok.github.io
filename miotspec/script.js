@@ -1,33 +1,50 @@
-$('#getDeviceMetadata').on('click', async function(e) {
+//get initial url parameters and seartch for the specified model if exists
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const model = urlParams.get('model');
+if (model) {
+  $('#deviceModelInputMetadata').val(model);
+  setTimeout(() => {
+    this.searchForSpecByModel(model);
+  }, 150);
+}
+
+$('#getDeviceMetadata').on('click', async (e) => {
   e.preventDefault();
-
-  $('.metadata-table-section').hide();
-  $('.error-section').hide();
-  $('.warning-section').hide();
-  $('.metadata-table-properties table tbody').empty();
-  $('.metadata-table-actions table tbody').empty();
-  $('.metadata-table-events table tbody').empty();
-  $('a.nav-link.tab-properties').addClass('disabled');
-  $('a.nav-link.tab-actions').addClass('disabled');
-  $('a.nav-link.tab-events').addClass('disabled');
-  $('p.metadata-device-type').hide();
-
   let modelInput = $('#deviceModelInputMetadata');
   let deviceModel = modelInput.val();
+  searchForSpecByModel(deviceModel);
+});
 
+function updateUrlParamModel(newModel) {
+  urlParams.set('model', newModel);
+  window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+}
+
+async function searchForSpecByModel(deviceModel) {
   if (deviceModel) {
+    $('.metadata-table-section').hide();
+    $('.error-section').hide();
+    $('.warning-section').hide();
+    $('.metadata-table-properties table tbody').empty();
+    $('.metadata-table-actions table tbody').empty();
+    $('.metadata-table-events table tbody').empty();
+    $('a.nav-link.tab-properties').addClass('disabled');
+    $('a.nav-link.tab-actions').addClass('disabled');
+    $('a.nav-link.tab-events').addClass('disabled');
+    $('p.metadata-device-type').hide();
     $('.spinner-section').show();
     try {
       const result = await new MiotSpecFetcher().fetchMiotSpecByModel(deviceModel, true);
       showMetadataTable(result);
+      updateUrlParamModel(deviceModel);
     } catch (err) {
       showError(err.message);
     }
   } else {
     showWarning('Please specify a device model!');
   }
-
-});
+}
 
 function showMetadataTable(metadata) {
   $('.spinner-section').hide();
@@ -43,7 +60,7 @@ function showMetadataTable(metadata) {
     showMetdataDeviceType(metadata);
     showSpecUrl(metadata);
 
-    if (metadata.properties  && Object.keys(metadata.properties).length > 0) {
+    if (metadata.properties && Object.keys(metadata.properties).length > 0) {
       renderProperties(metadata.properties);
       $('a.nav-link.tab-properties').removeClass('disabled');
       bootstrap.Tab.getOrCreateInstance($('a.nav-link.tab-properties')[0]).show();
